@@ -8,7 +8,7 @@ const server = http.createServer(app);
 // Update CORS configuration
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "https://your-frontend-domain.vercel.app"], // Add your frontend domain
+        origin: ["http://localhost:3000", "https://uno-next-afew.vercel.app"], // Add your frontend domain
         methods: ["GET", "POST"],
         credentials: true,
         transports: ['websocket', 'polling']
