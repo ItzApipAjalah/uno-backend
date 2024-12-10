@@ -1,23 +1,35 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const cors = require('cors');
 
 const app = express();
+
+// Enable CORS for all routes
+app.use(cors({
+    origin: ["https://uno-next-afew.vercel.app", "http://localhost:3000"],
+    methods: ["GET", "POST", "OPTIONS"],
+    credentials: true
+}));
+
 const server = http.createServer(app);
 
-// Update CORS configuration
+// Socket.IO configuration
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "https://uno-next-afew.vercel.app"], // Add your frontend domain
-        methods: ["GET", "POST"],
+        origin: ["https://uno-next-afew.vercel.app", "http://localhost:3000"],
+        methods: ["GET", "POST", "OPTIONS"],
         credentials: true,
-        transports: ['websocket', 'polling']
+        allowedHeaders: ["my-custom-header"],
     },
-    allowEIO3: true // Add this line
+    transports: ['polling', 'websocket'],
+    allowEIO3: true,
+    path: '/socket.io/'
 });
 
-// Add a basic route for health check
+// Add basic health check route
 app.get('/', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.send('Uno Backend is running');
 });
 
