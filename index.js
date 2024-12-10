@@ -4,12 +4,21 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
+
+// Update CORS configuration
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+        origin: ["http://localhost:3000", "https://your-frontend-domain.vercel.app"], // Add your frontend domain
         methods: ["GET", "POST"],
-        credentials: true
-    }
+        credentials: true,
+        transports: ['websocket', 'polling']
+    },
+    allowEIO3: true // Add this line
+});
+
+// Add a basic route for health check
+app.get('/', (req, res) => {
+    res.send('Uno Backend is running');
 });
 
 const PORT = process.env.PORT || 3001;
